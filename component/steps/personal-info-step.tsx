@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { FormData } from "../signup-flow";
+import { Mail, ChevronRight } from "lucide-react";
 
 interface PersonalInfoStepProps {
   formData: FormData;
@@ -43,11 +44,10 @@ export default function PersonalInfoStep({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground mb-2">
+      <div className="hidden md:block">
+        <h2 className="text-2xl md:text-[32px] font-semibold text-[#00264C] mb-2 md:mb-10">
           Personal Information
         </h2>
-        <p className="text-muted-foreground">Tell us about yourself</p>
       </div>
 
       <form
@@ -62,7 +62,7 @@ export default function PersonalInfoStep({
           <div>
             <label
               htmlFor="firstName"
-              className="block text-sm font-medium text-foreground mb-2"
+              className="block text-sm md:text-lg font-medium text-[#00264C] mb-2"
             >
               First Name
             </label>
@@ -76,7 +76,7 @@ export default function PersonalInfoStep({
                 errors.firstName
                   ? "border-red-500 bg-red-50"
                   : "border-gray-200 bg-white"
-              } text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition`}
+              } text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition`}
             />
             {errors.firstName && (
               <p className="text-xs text-red-500 mt-1">{errors.firstName}</p>
@@ -86,7 +86,7 @@ export default function PersonalInfoStep({
           <div>
             <label
               htmlFor="lastName"
-              className="block text-sm font-medium text-foreground mb-2"
+              className="block text-sm md:text-lg font-medium text-[#00264C] mb-2"
             >
               Last Name
             </label>
@@ -100,7 +100,7 @@ export default function PersonalInfoStep({
                 errors.lastName
                   ? "border-red-500 bg-red-50"
                   : "border-gray-200 bg-white"
-              } text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition`}
+              } text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition`}
             />
             {errors.lastName && (
               <p className="text-xs text-red-500 mt-1">{errors.lastName}</p>
@@ -112,42 +112,47 @@ export default function PersonalInfoStep({
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-foreground mb-2"
+            className="block text-sm md:text-lg font-medium text-[#00264C] mb-2"
           >
             Email Address
           </label>
-          <input
-            id="email"
-            type="email"
-            placeholder="fanawo@yahoo.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={`w-full px-4 py-3 rounded-lg border ${
-              errors.email
-                ? "border-red-500 bg-red-50"
-                : "border-gray-200 bg-white"
-            } text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition`}
-          />
+          <div className="relative">
+            <Mail className="absolute left-3 top-3.5 h-5 w-5 text-[#CCCBCB]" />
+            <input
+              id="email"
+              type="email"
+              placeholder="fanawo@yahoo.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
+                errors.email
+                  ? "border-red-500 bg-red-50"
+                  : "border-gray-200 bg-white"
+              } text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition`}
+            />
+          </div>
+
           {errors.email && (
             <p className="text-xs text-red-500 mt-1">{errors.email}</p>
           )}
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 pt-6">
+        <div className="flex justify-between gap-4 pt-6">
           <Button
             type="button"
             onClick={onBack}
             variant="outline"
-            className="flex-1"
+            className="bg-[#003366] hover:bg-[#254e71]"
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="flex-1 bg-[#1a3a52] hover:bg-[#254e71] text-white"
+            className="flex gap-6 bg-[#003366] hover:bg-[#254e71] text-white px-10"
           >
             Continue
+            <ChevronRight className=" left-3 top-3.5 h-5 w-5 text-[#FAFAFA]" />
           </Button>
         </div>
       </form>
