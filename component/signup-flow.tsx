@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Mail } from "lucide-react";
 import StepIndicator from "./step-indicator";
 import PersonalInfoStep from "./steps/personal-info-step";
 import SecurityStep from "./steps/security-step";
@@ -86,24 +86,53 @@ export default function SignupFlow({ onBackToLogin }: SignupFlowProps) {
   };
 
   return (
-    <div className="w-full max-w-3xl">
-      <div className="bg-white/95 backdrop-blur rounded-xl shadow-2xl p-8 sm:p-12">
-        {/* Logo and Title */}
-        <div className="flex flex-col items-center gap-3 mb-8">
-          <div className="w-12 h-12 rounded-lg bg-[#1a3a52] flex items-center justify-center">
-            <span className="text-white font-bold text-lg">🔍</span>
+    <div className="w-full max-w-[1616px]">
+      <div className="flex md:hidden flex-col items-center gap-3 mt-14 mb-16">
+        <div className="flex gap-4 justify-center items-center">
+          <div className="w-12 h-12 rounded-lg bg-[#003366] flex items-center justify-center">
+            <img src="/lens.svg" alt="Lens" className="w-6 h-" />
           </div>
-          <h1 className="text-2xl font-bold text-[#1a3a52]">THE LENS</h1>
-          <p className="text-sm text-muted-foreground">
-            Create your administrator account
-          </p>
+          <h1 className="text-2xl font-bold text-[#003366] mt-1">THE LENS</h1>
         </div>
+      </div>
 
-        {/* Step Indicator */}
-        <StepIndicator steps={steps} currentStep={currentStep} />
+      <div className="w-full max-w-[1616px]">
+        <div className="bg-white/95 backdrop-blur rounded-xl shadow-2xl p-8 sm:p-12 md:m-14">
+          {/* Logo and Title */}
+          <div className="hidden md:flex flex-col items-center gap-3 mb-8">
+            <div className="flex gap-4 justify-center items-center">
+              <div className="w-12 h-12 rounded-lg bg-[#003366] flex items-center justify-center">
+                <img src="/lens.svg" alt="Lens" className="w-6 h-" />
+              </div>
+              <h1 className="text-2xl font-bold text-[#003366] mt-1">
+                THE LENS
+              </h1>
+            </div>
+            <p className="text-sm text-[#898384]">
+              Create your administrator account
+            </p>
+          </div>
 
-        {/* Step Content */}
-        <div className="mt-12">{renderStep()}</div>
+          <div className="md:hidden pb-8">
+            {steps.map(
+              (step) =>
+                step.number === currentStep && (
+                  <h1
+                    key={step.number}
+                    className="text-lg font-semibold text-[#00264C] mb-2 md:mb-10"
+                  >
+                    {step.title}
+                  </h1>
+                )
+            )}
+          </div>
+
+          {/* Step Indicator */}
+          <StepIndicator steps={steps} currentStep={currentStep} />
+
+          {/* Step Content */}
+          <div className="mt-20">{renderStep()}</div>
+        </div>
       </div>
     </div>
   );
