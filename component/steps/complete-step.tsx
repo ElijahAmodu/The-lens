@@ -2,17 +2,17 @@
 
 import { Check } from "lucide-react";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 interface CompleteStepProps {
   onBackToLogin: () => void;
 }
 
 export default function CompleteStep({ onBackToLogin }: CompleteStepProps) {
+  const router = useRouter();
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center space-y-8">
-      {/* Success Icon */}
       <div className="w-24 h-24 rounded-full bg-teal-100 flex items-center justify-center animate-pulse">
-        {/* <Check className="h-12 w-12 text-[#A4F4E7]" strokeWidth={3} /> */}
         <img
           src="/green-check-mark.svg"
           alt="check-mark"
@@ -32,7 +32,7 @@ export default function CompleteStep({ onBackToLogin }: CompleteStepProps) {
 
       {/* Button */}
       <Button
-        onClick={onBackToLogin}
+        onClick={() => router.push("/admin/dashboard")}
         className="bg-[#003366] hover:bg-[#254e71] text-[#FAFAFA] px-10 py-6 rounded-lg md:text-2xl mt-4"
       >
         Go to Dashboard

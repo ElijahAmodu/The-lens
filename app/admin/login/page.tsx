@@ -8,21 +8,29 @@ export default function page() {
   const [isSignup, setIsSignup] = useState(false);
 
   return (
-    <>
-      {isSignup ? (
-        <div className="min-h-screen bg-[#F0F3F9] flex items-center justify-center p-4">
-          <SignupFlow onBackToLogin={() => setIsSignup(false)} />
-        </div>
-      ) : (
-        <div
-          className="min-h-screen flex items-center justify-center p-4"
-          style={{
-            backgroundImage: "url('/login-background.svg')",
-          }}
-        >
-          <LoginPage onSignupClick={() => setIsSignup(true)} />
-        </div>
-      )}
-    </>
+    // <>
+    //   {isSignup ? (
+    //     <div className="min-h-screen bg-[#F0F3F9] flex items-center justify-center p-4">
+    //       <SignupFlow onBackToLogin={() => setIsSignup(false)} />
+    //     </div>
+    //   ) : (
+    //     <div
+    //       className="min-h-screen flex items-center justify-center p-4"
+    //       style={{
+    //         backgroundImage: "url('/login-background.svg')",
+    //       }}
+    //     >
+    //       <LoginPage onSignupClick={() => setIsSignup(true)} />
+    //     </div>
+    //   )}
+    // </>
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{
+        backgroundImage: "url('/login-background.svg')",
+      }}
+    >
+      <LoginPage onSignupClick={() => setIsSignup(true)} />
+    </div>
   );
 }

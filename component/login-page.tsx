@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
+import { useRouter } from "next/navigation";
 
 interface LoginPageProps {
   onSignupClick: () => void;
@@ -14,6 +15,7 @@ export default function LoginPage({ onSignupClick }: LoginPageProps) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,7 +80,7 @@ export default function LoginPage({ onSignupClick }: LoginPageProps) {
                 <input
                   id="email"
                   type="email"
-                  placeholder="fanawo@yahoo.com"
+                  placeholder="johndoe@yahoo.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 rounded-lg bg-white border border-gray-200 text-[#151314] placeholder-[#CCCBCB] focus:outline-none focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition"
@@ -146,7 +148,7 @@ export default function LoginPage({ onSignupClick }: LoginPageProps) {
               Don't have an account?{" "}
             </span>
             <button
-              onClick={onSignupClick}
+              onClick={() => router.push("/admin/signup")}
               className="font-semibold text-[#1a3a52] hover:text-[#254e71] transition cursor-pointer"
             >
               Sign up for free

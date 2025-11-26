@@ -121,7 +121,7 @@ export default function PersonalInfoStep({
             <input
               id="email"
               type="email"
-              placeholder="fanawo@yahoo.com"
+              placeholder="johndoe@yahoo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
@@ -138,15 +138,15 @@ export default function PersonalInfoStep({
         </div>
 
         {/* Buttons */}
-        <div className="flex justify-between gap-4 pt-6">
-          <Button
+        <div className="flex justify-end gap-4 pt-6">
+          {/* <Button
             type="button"
             onClick={onBack}
             variant="outline"
             className="bg-[#003366] hover:bg-[#254e71]"
           >
             Back
-          </Button>
+          </Button> */}
           <Button
             type="submit"
             className="flex gap-6 bg-[#003366] hover:bg-[#254e71] text-white px-10"
