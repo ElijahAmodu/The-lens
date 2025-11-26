@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, AlertCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { useRouter } from "next/navigation";
+import { login } from "@/lib/auth-actions";
 
 interface LoginPageProps {
   onSignupClick: () => void;
@@ -15,14 +16,40 @@ export default function LoginPage({ onSignupClick }: LoginPageProps) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log("login details", { email, password });
-    // Simulate login
-    setTimeout(() => setIsLoading(false), 1000);
+    setError(null);
+
+    console.log("Starting login process...");
+
+    try {
+      const loginData = { email, password };
+      console.log("Login data prepared:", { email: loginData.email });
+
+      const result = await login(loginData);
+      console.log("Login result received:", result);
+
+      if (result.success) {
+        console.log("Login successful! Session:", result.data?.session);
+
+        // Redirect immediately - no timeout needed
+        router.push("/admin/dashboard");
+      } else {
+        console.error("Login failed:", result.error);
+        setError(result.error || "Login failed. Please try again.");
+        setIsLoading(false);
+      }
+    } catch (err: any) {
+      console.error("Unexpected login error:", err);
+      setError(
+        err.message || "An unexpected error occurred. Please try again."
+      );
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -65,6 +92,16 @@ export default function LoginPage({ onSignupClick }: LoginPageProps) {
             </p>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="text-sm text-red-800">{error}</p>
+              </div>
+            </div>
+          )}
+
           {/* Form */}
           <form onSubmit={handleLogin} className="space-y-5">
             {/* Email Input */}
@@ -82,9 +119,13 @@ export default function LoginPage({ onSignupClick }: LoginPageProps) {
                   type="email"
                   placeholder="johndoe@yahoo.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setError(null);
+                  }}
                   className="w-full pl-10 pr-4 py-3 rounded-lg bg-white border border-gray-200 text-[#151314] placeholder-[#CCCBCB] focus:outline-none focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition"
                   required
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -104,14 +145,19 @@ export default function LoginPage({ onSignupClick }: LoginPageProps) {
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setError(null);
+                  }}
                   className="w-full pl-10 pr-10 py-3 rounded-lg bg-white border border-gray-200 text-[#151314] placeholder-[#CCCBCB] focus:outline-none focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition"
                   required
+                  disabled={isLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600 disabled:opacity-50"
+                  disabled={isLoading}
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -124,12 +170,14 @@ export default function LoginPage({ onSignupClick }: LoginPageProps) {
 
             {/* Forgot Password Link */}
             <div className="flex justify-end">
-              <a
-                href="#"
-                className="text-lg font-medium text-[#003366] hover:text-[#254e71] transition"
+              <button
+                type="button"
+                onClick={() => router.push("/admin/forgot-password")}
+                className="text-lg font-medium text-[#003366] hover:text-[#254e71] transition disabled:opacity-50"
+                disabled={isLoading}
               >
                 Forgot Password?
-              </a>
+              </button>
             </div>
 
             {/* Login Button */}
@@ -138,7 +186,33 @@ export default function LoginPage({ onSignupClick }: LoginPageProps) {
               disabled={isLoading}
               className="w-full bg-[#003366] hover:bg-[#254e71] text-white text-lg font-semibold py-6 rounded-xl transition disabled:opacity-70"
             >
-              {isLoading ? "Logging in..." : "Login"}
+              {isLoading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg
+                    className="animate-spin h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Logging in...
+                </span>
+              ) : (
+                "Login"
+              )}
             </Button>
           </form>
 
@@ -149,7 +223,8 @@ export default function LoginPage({ onSignupClick }: LoginPageProps) {
             </span>
             <button
               onClick={() => router.push("/admin/signup")}
-              className="font-semibold text-[#1a3a52] hover:text-[#254e71] transition cursor-pointer"
+              className="font-semibold text-[#1a3a52] hover:text-[#254e71] transition cursor-pointer disabled:opacity-50"
+              disabled={isLoading}
             >
               Sign up for free
             </button>
