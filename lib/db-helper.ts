@@ -9,7 +9,8 @@ export type ArticleCategory =
   | "politics"
   | "maritime"
   | "health"
-  | "business";
+  | "business"
+  | "sports";
 
 export type DeviceType = "mobile" | "desktop" | "tablet";
 
